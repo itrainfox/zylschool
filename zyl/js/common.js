@@ -6,13 +6,6 @@ $(function(){
 		$(this).css("background", "#df4754");
 		$(this).find(".sub_menu").hide();
 	})
-	$(".teach_item").hover(function(){
-		$(this).addClass("teach_item_hover").siblings().removeClass('teach_item_hover');
-		// $(this).find(".teach_into").show();
-	}, function(){
-		$(this).removeClass('teach_item_hover');
-		// $(this).find(".teach_into").hide();
-	})
 	$(".st_item").hover(function(){
 		$(this).addClass("st_item_hover").siblings().removeClass('st_item_hover');
 	}, function(){
@@ -30,14 +23,130 @@ $(function(){
 		$(this).removeClass('menu_list_hover');
 	})
 
+
+
+	var htmls = '';
+	for (var i = 0; i < 30; i++) {
+		htmls += '<li data-id="math">'
+				+'<div class="teach_item">'
+				+'<img src="images/teacher_pics.jpg" alt="" title="">'
+				+'<div class="teach_item_opt">'
+				+'<div class="opts">'
+				+'<span class="teach_name">鸭绒</span>'
+				+'<span>程序员鼓励师</span>'
+				+'<i class="pull_right teach_into icon"></i>'
+				+'</div>'
+				+'<div class="teach_txt">'
+				+'<p>七年前端七年前端七年前端七年前端七年前端七年前端七年前端七年七年前端七年前端七年前端七年前端七年前端七年前端七年前端七年</p>'
+				+'</div>'
+				+'</div>'
+				+'</div>'	
+				+'</li>'
+	};
+
+	$(".teachers_boxs_show").append(htmls);
+	$(".teach_item").hover(function(){
+		$(this).addClass("teach_item_hover").siblings().removeClass('teach_item_hover');
+	}, function(){
+		$(this).removeClass('teach_item_hover');
+	})
+
+
+	var lens = $(".teachers_boxs_show li").length;
+	var wids = $(".teachers_boxs_show li").width() + 11;
+	var stimer = null;
+	var snow = 0;
+
+	sChange();
+
+	function sChange(){
+		stimer = setInterval(function(){
+			if (snow >= lens - 4) {
+				snow = 0;
+			} else {
+				snow++;
+				$(".teach_slider").animate({
+					"scrollLeft" : wids * snow
+				}, 300)
+			}
+		}, 3000)
+	}
+
+	$(".teachers_boxs_show li").hover(function(){
+		clearInterval(stimer);
+	}, function(){
+		sChange();
+	})
+
+
 	$(".teach_head ul li").hover(function(){
+		clearInterval(stimer);
+		lens = 8;
+		snow = 0;
+		$(".teach_slider").scrollLeft(0);
+		sChange();
+		$(".teachers_boxs_show").html('');
+		if ($(this).attr('data-id') != 'all') {
+			htmls = '';
+			for (var i = 0; i < 8; i++) {
+				htmls += '<li data-id="math">'
+						+'<div class="teach_item">'
+						+'<img src="images/course_pics_1.jpg" alt="" title="">'
+						+'<div class="teach_item_opt">'
+						+'<div class="opts">'
+						+'<span class="teach_name">鸭绒</span>'
+						+'<span>程序员鼓励师</span>'
+						+'<i class="pull_right teach_into icon"></i>'
+						+'</div>'
+						+'<div class="teach_txt">'
+						+'<p>七年前端七年前端七年前端七年前端七年前端七年前端七年前端七年七年前端七年前端七年前端七年前端七年前端七年前端七年前端七年</p>'
+						+'</div>'
+						+'</div>'
+						+'</div>'	
+						+'</li>'
+			};
+
+			$(".teachers_boxs_show").append(htmls);
+			$(".teach_item").hover(function(){
+				$(this).addClass("teach_item_hover").siblings().removeClass('teach_item_hover');
+			}, function(){
+				$(this).removeClass('teach_item_hover');
+			})
+		} else {
+			htmls = '';
+			for (var i = 0; i < 30; i++) {
+				htmls += '<li data-id="math">'
+						+'<div class="teach_item">'
+						+'<img src="images/teacher_pics.jpg" alt="" title="">'
+						+'<div class="teach_item_opt">'
+						+'<div class="opts">'
+						+'<span class="teach_name">鸭绒</span>'
+						+'<span>程序员鼓励师</span>'
+						+'<i class="pull_right teach_into icon"></i>'
+						+'</div>'
+						+'<div class="teach_txt">'
+						+'<p>七年前端七年前端七年前端七年前端七年前端七年前端七年前端七年七年前端七年前端七年前端七年前端七年前端七年前端七年前端七年</p>'
+						+'</div>'
+						+'</div>'
+						+'</div>'	
+						+'</li>'
+			};
+
+			$(".teachers_boxs_show").append(htmls);
+			$(".teach_item").hover(function(){
+				$(this).addClass("teach_item_hover").siblings().removeClass('teach_item_hover');
+			}, function(){
+				$(this).removeClass('teach_item_hover');
+			})
+		}
+
 		$(this).addClass("teach_select").siblings().removeClass("teach_select");
-		$(".teachers_boxs").eq($(this).index()).addClass("teachers_boxs_show").siblings().removeClass("teachers_boxs_show");
 	})
 
 	$(".xyzx_main .teach_head ul li").hover(function(){
 		$(this).addClass("teach_select").siblings().removeClass("teach_select");
 		$(".college_box_item").eq($(this).index()).addClass("college_box_item_show").siblings().removeClass("college_box_item_show");
+		$(".college_zx_box").eq($(this).index()).addClass("college_zx_box_show").siblings().removeClass("college_zx_box_show");
 	})
 
 
@@ -112,6 +221,7 @@ $(function(){
 			}
 			$(".student_pages li").eq(studentNow).addClass("student_current").siblings().removeClass("student_current");
 			$(".student_one").eq(studentNow).fadeIn(500).siblings().hide();
+			$(".zx_head em").eq(studentNow).addClass("em_show").siblings().removeClass("em_show");
 		}, 3000);	
 	}
 	$(".student_pages li").on("click", function(){
@@ -119,6 +229,7 @@ $(function(){
 		studentChange();
 		studentNow = $(this).index();
 		$(this).addClass("student_current").siblings().removeClass("student_current");
+		$(".zx_head em").eq(studentNow).addClass("em_show").siblings().removeClass("em_show");
 		$(".student_one").eq($(this).index()).fadeIn(500).siblings().hide();
 	});
 
@@ -134,8 +245,19 @@ $(function(){
 	}, function(){
 		$(this).removeClass("hover_img");
 	})
-	$(".zx_item .zx_head span").on("click", function(){
-		$(this).addClass("zx_select").siblings().removeClass("zx_select");
+	$(".zx_item .zx_head span").hover(function(){
+		$(this).addClass("zx_select").siblings().removeClass("zx_select").find(".arrow_down").removeClass("arrow_down_white");
+		if($(this).find(".arrow_down")) {
+			$(this).find(".arrow_down").addClass("arrow_down_white");
+		}
+
+		$(".zx_item .zx_one").eq($(this).index()).addClass("zx_one_show").siblings().removeClass("zx_one_show");
+	}, function(){
+		if($(this).find(".arrow_down")) {
+			if (!$(this).hasClass("zx_select")) {
+				$(this).find(".arrow_down").removeClass("arrow_down_white");
+			};
+		}
 	})
 
 	var w = $(".st_item").width();
