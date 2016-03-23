@@ -24,27 +24,34 @@ $(function(){
 	})
 
 
+	// $(".teach_item").hover(function(){
+	// 	$(this).addClass("teach_item_hover").siblings().removeClass('teach_item_hover');
+	// }, function(){
+	// 	$(this).removeClass('teach_item_hover');
+	// })
 
-	var htmls = '';
-	for (var i = 0; i < 30; i++) {
-		htmls += '<li data-id="math">'
-				+'<div class="teach_item">'
-				+'<img src="images/teacher_pics.jpg" alt="" title="">'
-				+'<div class="teach_item_opt">'
-				+'<div class="opts">'
-				+'<span class="teach_name">鸭绒</span>'
-				+'<span>程序员鼓励师</span>'
-				+'<i class="pull_right teach_into icon"></i>'
-				+'</div>'
-				+'<div class="teach_txt">'
-				+'<p>七年前端七年前端七年前端七年前端七年前端七年前端七年前端七年七年前端七年前端七年前端七年前端七年前端七年前端七年前端七年</p>'
-				+'</div>'
-				+'</div>'
-				+'</div>'	
-				+'</li>'
-	};
 
-	$(".teachers_boxs_show").append(htmls);
+
+	// var htmls = '';
+	// for (var i = 0; i < 30; i++) {
+	// 	htmls += '<li data-id="math">'
+	// 			+'<div class="teach_item">'
+	// 			+'<img src="images/teacher_pics.jpg" alt="" title="">'
+	// 			+'<div class="teach_item_opt">'
+	// 			+'<div class="opts">'
+	// 			+'<span class="teach_name">鸭绒</span>'
+	// 			+'<span>程序员鼓励师</span>'
+	// 			+'<i class="pull_right teach_into icon"></i>'
+	// 			+'</div>'
+	// 			+'<div class="teach_txt">'
+	// 			+'<p>七年前端七年前端七年前端七年前端七年前端七年前端七年前端七年七年前端七年前端七年前端七年前端七年前端七年前端七年前端七年</p>'
+	// 			+'</div>'
+	// 			+'</div>'
+	// 			+'</div>'	
+	// 			+'</li>'
+	// };
+
+	// $(".teachers_boxs_show").append(htmls);
 	$(".teach_item").hover(function(){
 		$(this).addClass("teach_item_hover").siblings().removeClass('teach_item_hover');
 	}, function(){
@@ -56,20 +63,22 @@ $(function(){
 	var wids = $(".teachers_boxs_show li").width() + 11;
 	var stimer = null;
 	var snow = 0;
+	var nowTit = 'all';
 
 	sChange();
 
 	function sChange(){
+		clearInterval(stimer);
 		stimer = setInterval(function(){
-			if (snow >= lens - 4) {
+			if (snow >= (lens - 4)*wids) {
 				snow = 0;
 			} else {
 				snow++;
 				$(".teach_slider").animate({
-					"scrollLeft" : wids * snow
-				}, 300)
+					"scrollLeft" : snow
+				}, 0)
 			}
-		}, 3000)
+		}, 15)
 	}
 
 	$(".teachers_boxs_show li").hover(function(){
@@ -80,67 +89,32 @@ $(function(){
 
 
 	$(".teach_head ul li").hover(function(){
-		clearInterval(stimer);
-		lens = 8;
-		snow = 0;
-		$(".teach_slider").scrollLeft(0);
-		sChange();
-		$(".teachers_boxs_show").html('');
-		if ($(this).attr('data-id') != 'all') {
-			htmls = '';
-			for (var i = 0; i < 8; i++) {
-				htmls += '<li data-id="math">'
-						+'<div class="teach_item">'
-						+'<img src="images/course_pics_1.jpg" alt="" title="">'
-						+'<div class="teach_item_opt">'
-						+'<div class="opts">'
-						+'<span class="teach_name">鸭绒</span>'
-						+'<span>程序员鼓励师</span>'
-						+'<i class="pull_right teach_into icon"></i>'
-						+'</div>'
-						+'<div class="teach_txt">'
-						+'<p>七年前端七年前端七年前端七年前端七年前端七年前端七年前端七年七年前端七年前端七年前端七年前端七年前端七年前端七年前端七年</p>'
-						+'</div>'
-						+'</div>'
-						+'</div>'	
-						+'</li>'
-			};
+		if (nowTit != $(this).attr('data-id')) {
+			clearInterval(stimer);
+			snow = 0;
+			lens = $(".teachers_boxs_show").find("li").length;
+			$(".teach_slider").scrollLeft(0);
+			setTimeout(function(){
+				sChange();
+			}, 500);
+			
+			$(this).addClass("teach_select").siblings().removeClass("teach_select");
+			$(".teach_slider").find('.teachers_boxs').eq($(this).index()).addClass('teachers_boxs_show').siblings().removeClass("teachers_boxs_show");
 
-			$(".teachers_boxs_show").append(htmls);
-			$(".teach_item").hover(function(){
-				$(this).addClass("teach_item_hover").siblings().removeClass('teach_item_hover');
-			}, function(){
-				$(this).removeClass('teach_item_hover');
-			})
-		} else {
-			htmls = '';
-			for (var i = 0; i < 30; i++) {
-				htmls += '<li data-id="math">'
-						+'<div class="teach_item">'
-						+'<img src="images/teacher_pics.jpg" alt="" title="">'
-						+'<div class="teach_item_opt">'
-						+'<div class="opts">'
-						+'<span class="teach_name">鸭绒</span>'
-						+'<span>程序员鼓励师</span>'
-						+'<i class="pull_right teach_into icon"></i>'
-						+'</div>'
-						+'<div class="teach_txt">'
-						+'<p>七年前端七年前端七年前端七年前端七年前端七年前端七年前端七年七年前端七年前端七年前端七年前端七年前端七年前端七年前端七年</p>'
-						+'</div>'
-						+'</div>'
-						+'</div>'	
-						+'</li>'
-			};
 
-			$(".teachers_boxs_show").append(htmls);
-			$(".teach_item").hover(function(){
-				$(this).addClass("teach_item_hover").siblings().removeClass('teach_item_hover');
+			var wids = $(".teach_item").width() + 11;
+			var lens = $(".teachers_boxs_show").find(".teach_item").length;
+			$(".teachers_boxs_show").width(lens*wids);
+
+
+			$(".teachers_boxs_show li").hover(function(){
+				clearInterval(stimer);
 			}, function(){
-				$(this).removeClass('teach_item_hover');
+				sChange();
 			})
 		}
 
-		$(this).addClass("teach_select").siblings().removeClass("teach_select");
+		nowTit = $(this).attr('data-id');
 	})
 
 	$(".xyzx_main .teach_head ul li").hover(function(){
@@ -309,6 +283,12 @@ $(function(){
 	})
 	$(".teams_pages li").on("click", function(){
 		$(this).addClass("teams_page_currents").siblings().removeClass("teams_page_currents");
+	})
+
+	$(".team_guid").hover(function(){
+		$(this).find(".menu_list").show();
+	}, function(){
+		$(this).find(".menu_list").hide();
 	})
 
 })
